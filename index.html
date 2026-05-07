@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Red Cup Karaoke — Chicago's Biggest Karaoke Party</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  /* ============================================================
+     TOKENS & RESET
+  ============================================================ */
+  :root {
+    --red:        #D42B2B;
+    --red-hot:    #FF3131;
+    --gold:       #F5C518;
+    --cream:      #F0EAD6;
+    --black:      #0A0A0A;
+    --dark:       #111111;
+    --dark2:      #181818;
+    --dark3:      #1E1E1E;
+    --purple:     #5B2D8E;
+    --purple-glow:#7B3FBE;
+    --white:      #FFFFFF;
+    --grey:       #888888;
+    --light-grey: #CCCCCC;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-cond:    'Barlow Condensed', sans-serif;
+    --font-body:    'Barlow', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+  }
+  img { display: block; max-width: 100%; }
+  a { text-decoration: none; color: inherit; }
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+  .section-label {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+  }
+  .red-line {
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: var(--red-hot);
+    margin: 1.2rem 0;
+  }
+  .red-line.center { margin: 1.2rem auto; }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-cond);
+    font-weight: 900;
+    font-size: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    padding: 1rem 2.2rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    border-radius: 2px;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--red-hot);
+    color: var(--white);
+    box-shadow: 0 0 20px rgba(255,49,49,0.5);
+  }
+  .btn-primary:hover { background: #ff4f4f; box-shadow: 0 0 32px rgba(255,49,49,0.75); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.5);
+  }
+  .btn-secondary:hover { border-color: var(--white); background: rgba(255,255,255,0.06); }
+  .btn-gold {
+    background: var(--gold);
+    color: var(--black);
+    box-shadow: 0 0 20px rgba(245,197,24,0.4);
+  }
+  .btn-gold:hover { box-shadow: 0 0 36px rgba(245,197,24,0.65); }
+  .btn-outline-white {
+    background: transparent;
+    color: var(--white);
+    border: 2px solid var(--white);
+  }
+  .btn-outline-white:hover { background: var(--white); color: var(--black); }
+
+  /* ============================================================
+     NAV
+  ============================================================ */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
+  }
+  nav.scrolled {
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(212,43,43,0.25);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+  }
+  .nav-logo span { color: var(--red-hot); }
+  .nav-cup { font-size: 1.2rem; }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--light-grey);
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-links .nav-cta { color: var(--red-hot); }
+  .nav-links .nav-cta:hover { color: var(--red-hot); opacity: 0.8; }
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--white);
+    transition: all 0.3s ease;
+  }
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,10,10,0.98);
+    z-index: 999;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-family: var(--font-display);
+    font-size: 2.5rem;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--red-hot); }
+  .mobile-close {
+    position: absolute;
+    top: 1.5rem; right: 2rem;
+    font-size: 2rem;
+    cursor: pointer;
+    color: var(--white);
+    font-family: var(--font-display);
+  }
+
+  /* ============================================================
+     HERO
+  ============================================================ */
+  #hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 7rem 1.5rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  /* Layered background: deep dark with color glow */
+  .hero-bg-layer1 {
+    position: absolute;
+    inset: 0;
+    /* REPLACE with real event photo: background-image: url('your-hero-photo.jpg'); */
+    background: #080808;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 50% 80%, rgba(91,45,142,0.55) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 40% at 20% 60%, rgba(212,43,43,0.35) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 40%, rgba(212,43,43,0.25) 0%, transparent 60%);
+  }
+  /* Grain texture overlay */
+  .hero-bg-grain {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    opacity: 0.35;
+  }
+  /* Vignette */
+  .hero-bg-vignette {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 100% 100% at 50% 50%, transparent 40%, rgba(0,0,0,0.8) 100%);
+  }
+  /* Scanlines effect */
+  .hero-bg-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.03) 2px,
+      rgba(0,0,0,0.03) 4px
+    );
+    pointer-events: none;
+  }
+  /* IMAGE PLACEHOLDER — replace when real photo is available */
+  .hero-img-placeholder {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-cond);
+    color: rgba(255,255,255,0.08);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    max-width: 900px;
+    animation: heroFadeUp 0.9s ease both;
+  }
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(245,197,24,0.3);
+    padding: 0.4rem 1rem;
+    margin-bottom: 1.5rem;
+    animation: heroFadeUp 0.9s 0.1s ease both;
+  }
+  .hero-cup-icon { font-size: 1rem; }
+  .hero-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(4.5rem, 16vw, 12rem);
+    line-height: 0.88;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    animation: heroFadeUp 0.9s 0.2s ease both;
+  }
+  .hero-h1 .line-red { color: var(--red-hot); display: block; }
+  .hero-h1 .line-white { color: var(--white); display: block; }
+  .hero-sub {
+    font-family: var(--font-cond);
+    font-weight: 600;
+    font-size: clamp(1.1rem, 3.5vw, 1.5rem);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+    margin: 1.2rem 0 2.5rem;
+    animation: heroFadeUp 0.9s 0.3s ease both;
+  }
+  .hero-sub strong { color: var(--white); }
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: heroFadeUp 0.9s 0.4s ease both;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-cond);
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    animation: scrollBounce 2s infinite;
+  }
+  @keyframes scrollBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(6px); }
+  }
+  .hero-scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--red-hot), transparent);
+  }
+
+  /* ============================================================
+     ABOUT / EXPERIENCE
+  ============================================================ */
+  #about {
+    padding: 7rem 1.5rem;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-bg-glow {
+    position: absolute;
+    top: -100px; right: -150px;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(91,45,142,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .about-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .about-text {}
+  .about-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .about-h2 em { color: var(--red-hot); font-style: normal; }
+  .about-body {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: rgba(255,255,255,0.7);
+    max-width: 500px;
+  }
+  .about-body p + p { margin-top: 1rem; }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+  .stat {
+    border-left: 3px solid var(--red-hot);
+    padding-left: 1rem;
+  }
+  .stat-num {
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    line-height: 1;
+    color: var(--white);
+  }
+  .stat-num span { color: var(--red-hot); }
+  .stat-label {
+    font-family: var(--font-cond);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-top: 0.3rem;
+  }
+  /* Image placeholder panel */
+  .about-visual {
+    position: relative;
+  }
+  .about-img-main {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--dark3);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-cond);
+    color: rgba(255,255,255,0.15);
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    border: 1px solid rgba(255,255,255,0.06);
+    overflow: hidden;
+    position: relative;
+  }
+  .about-img-main::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,43,43,0.08) 0%, rgba(91,45,142,0.12) 100%);
+  }
+  .about-img-accent {
+    position: absolute;
+    bottom: -1.5rem;
+    left: -1.5rem;
+    width: 55%;
+    aspect-ratio: 1;
+    background: var(--red-hot);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .about-img-accent-inner {
+    width: 100%;
+    height: 100%;
+    background: var(--dark3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-cond);
+    color: rgba(255,255,255,0.2);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: 3px solid var(--red-hot);
+  }
+  .cup-watermark {
+    position: absolute;
+    bottom: -1rem;
+    right: -1rem;
+    font-size: 8rem;
+    opacity: 0.04;
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  /* ============================================================
+     WHY PEOPLE LOVE IT
+  ============================================================ */
+  #highlights {
+    padding: 7rem 1.5rem;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  #highlights::before {
+    content: 'RCK';
+    position: absolute;
+    bottom: -2rem;
+    right: -2rem;
+    font-family: var(--font-display);
+    font-size: 20rem;
+    color: rgba(212,43,43,0.03);
+    line-height: 1;
+    pointer-events: none;
+  }
+  .highlights-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .highlights-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+  .highlights-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+  .highlights-h2 span { color: var(--red-hot); }
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+  .highlight-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-top: 3px solid var(--red-hot);
+    padding: 2.5rem 2rem;
+    border-radius: 4px;
+    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .highlight-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,43,43,0.04) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.25s;
+  }
+  .highlight-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--red-hot);
+    box-shadow: 0 8px 40px rgba(212,43,43,0.15);
+  }
+  .highlight-card:hover::before { opacity: 1; }
+  .hc-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+  .hc-title {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .hc-body {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: rgba(255,255,255,0.6);
+  }
+  /* Featured card */
+  .highlight-card.featured {
+    background: var(--red-hot);
+    border-color: var(--red-hot);
+  }
+  .highlight-card.featured .hc-body { color: rgba(255,255,255,0.85); }
+  .highlight-card.featured::before { display: none; }
+
+  /* ============================================================
+     GALLERY
+  ============================================================ */
+  #gallery {
+    padding: 7rem 1.5rem;
+    background: var(--dark);
+  }
+  .gallery-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .gallery-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .gallery-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    text-transform: uppercase;
+    line-height: 0.95;
+  }
+  .gallery-h2 span { color: var(--red-hot); }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 8px;
+  }
+  .gallery-item {
+    background: var(--dark3);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+  }
+  .gallery-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(212,43,43,0);
+    transition: background 0.3s ease;
+  }
+  .gallery-item:hover::after { background: rgba(212,43,43,0.2); }
+  .gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-family: var(--font-cond);
+    color: rgba(255,255,255,0.12);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .gallery-placeholder-icon { font-size: 1.5rem; opacity: 0.3; }
+  /* Grid layout */
+  .gi-1 { grid-column: span 5; grid-row: span 2; }
+  .gi-2 { grid-column: span 4; }
+  .gi-3 { grid-column: span 3; }
+  .gi-4 { grid-column: span 4; }
+  .gi-5 { grid-column: span 3; }
+  .gi-6 { grid-column: span 5; }
+  .gi-7 { grid-column: span 4; }
+  .gi-8 { grid-column: span 3; }
+  .gallery-item .gallery-placeholder { background: linear-gradient(135deg, var(--dark3) 0%, rgba(91,45,142,0.12) 100%); }
+  .gi-1 .gallery-placeholder { min-height: 380px; background: linear-gradient(160deg, rgba(212,43,43,0.08) 0%, var(--dark3) 100%); }
+  .gallery-caption {
+    margin-top: 2rem;
+    text-align: center;
+    font-family: var(--font-cond);
+    font-size: 0.8rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.3);
+  }
+
+  /* ============================================================
+     UPCOMING EVENTS
+  ============================================================ */
+  #events {
+    padding: 7rem 1.5rem;
+    background: var(--black);
+    position: relative;
+    overflow: hidden;
+  }
+  .events-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(91,45,142,0.2) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 20%, rgba(212,43,43,0.1) 0%, transparent 60%);
+  }
+  .events-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .events-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.88;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+  .events-h2 span { color: var(--red-hot); }
+  /* Event Card */
+  .event-card {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-left: 4px solid var(--red-hot);
+    padding: 2.5rem;
+    margin: 2rem auto;
+    max-width: 680px;
+    text-align: left;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    border-radius: 4px;
+    transition: box-shadow 0.25s ease;
+  }
+  .event-card:hover { box-shadow: 0 0 40px rgba(212,43,43,0.15); }
+  .event-date-block {
+    text-align: center;
+    min-width: 70px;
+  }
+  .event-date-month {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--red-hot);
+  }
+  .event-date-day {
+    font-family: var(--font-display);
+    font-size: 3.5rem;
+    line-height: 1;
+    color: var(--white);
+  }
+  .event-date-year {
+    font-family: var(--font-cond);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--grey);
+  }
+  .event-info {}
+  .event-name {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .event-details {
+    font-family: var(--font-cond);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.5);
+  }
+  .event-details strong { color: var(--gold); }
+  .event-badge {
+    display: inline-block;
+    font-family: var(--font-cond);
+    font-weight: 900;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.7rem;
+    background: rgba(245,197,24,0.15);
+    color: var(--gold);
+    border: 1px solid rgba(245,197,24,0.35);
+    border-radius: 2px;
+    margin-top: 0.5rem;
+  }
+  .event-cta { text-align: center; }
+  .events-disclaimer {
+    margin-top: 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+    font-family: var(--font-cond);
+    letter-spacing: 0.1em;
+  }
+
+  /* ============================================================
+     BOOKING / PARTNER
+  ============================================================ */
+  #booking {
+    padding: 7rem 1.5rem;
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .booking-bg {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,43,43,0.06) 0%, rgba(91,45,142,0.08) 100%);
+  }
+  .booking-inner {
+    position: relative;
+    z-index: 2;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+  .booking-text {}
+  .booking-h2 {
+    font-family: var(--font-display);
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .booking-h2 em { color: var(--red-hot); font-style: normal; }
+  .booking-body {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.65);
+    margin-bottom: 2rem;
+  }
+  .booking-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+  }
+  .booking-option {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: var(--font-cond);
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    color: rgba(255,255,255,0.8);
+  }
+  .booking-option-dot {
+    width: 8px; height: 8px;
+    background: var(--red-hot);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  /* Form */
+  .booking-form {
+    background: var(--dark2);
+    border: 1px solid rgba(255,255,255,0.06);
+    padding: 2.5rem;
+    border-radius: 4px;
+  }
+  .booking-form h3 {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+  .booking-form p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 1.5rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+  .form-group label {
+    font-family: var(--font-cond);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--grey);
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    padding: 0.8rem 1rem;
+    border-radius: 3px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: var(--red-hot);
+  }
+  .form-group select option { background: var(--dark); }
+  .form-group textarea { resize: vertical; min-height: 90px; }
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  footer {
+    background: var(--black);
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding: 4rem 1.5rem 2rem;
+  }
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    margin-bottom: 2rem;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    margin-bottom: 0.75rem;
+  }
+  .footer-logo span { color: var(--red-hot); }
+  .footer-tagline {
+    font-family: var(--font-cond);
+    font-size: 0.85rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    margin-bottom: 1.5rem;
+  }
+  .footer-socials {
+    display: flex;
+    gap: 1rem;
+  }
+  .footer-social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px; height: 40px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .footer-social-link:hover { border-color: var(--red-hot); background: rgba(212,43,43,0.12); }
+  .footer-col-title {
+    font-family: var(--font-cond);
+    font-weight: 700;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--grey);
+    margin-bottom: 1.2rem;
+  }
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    list-style: none;
+  }
+  .footer-links a {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.5);
+    transition: color 0.2s;
+    font-family: var(--font-cond);
+    letter-spacing: 0.05em;
+  }
+  .footer-links a:hover { color: var(--white); }
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.25);
+    font-family: var(--font-cond);
+    letter-spacing: 0.1em;
+  }
+  .footer-bottom-cup {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    color: var(--red-hot);
+    opacity: 0.6;
+  }
+
+  /* ============================================================
+     TICKER STRIP
+  ============================================================ */
+  .ticker {
+    background: var(--red-hot);
+    padding: 0.6rem 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  .ticker-inner {
+    display: inline-flex;
+    animation: tickerScroll 30s linear infinite;
+  }
+  .ticker-item {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    padding: 0 2.5rem;
+  }
+  .ticker-dot {
+    color: rgba(255,255,255,0.5);
+  }
+  @keyframes tickerScroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  /* ============================================================
+     SECTION DIVIDERS
+  ============================================================ */
+  .divider-angled {
+    height: 60px;
+    background: var(--dark);
+    clip-path: polygon(0 0, 100% 60%, 100% 100%, 0 100%);
+    margin-top: -1px;
+  }
+  .divider-angled.flip {
+    clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%);
+    background: var(--black);
+  }
+
+  /* ============================================================
+     SCROLL REVEAL
+  ============================================================ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 900px) {
+    .about-inner,
+    .booking-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .about-visual { order: -1; }
+    .about-img-accent { display: none; }
+    .highlights-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .event-card { grid-template-columns: auto 1fr; }
+    .event-cta { grid-column: 1 / -1; }
+    .gallery-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto;
+    }
+    .gi-1, .gi-2, .gi-3, .gi-4,
+    .gi-5, .gi-6, .gi-7, .gi-8 {
+      grid-column: span 1;
+      grid-row: span 1;
+    }
+    .gi-1 .gallery-placeholder { min-height: 200px; }
+  }
+  @media (max-width: 600px) {
+    nav { padding: 1rem 1.2rem; }
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .highlights-grid { grid-template-columns: 1fr; }
+    .about-stats { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .event-card { grid-template-columns: 1fr; gap: 1rem; }
+    .event-date-block { display: flex; align-items: center; gap: 1rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAV
+============================================================ -->
+<nav id="mainNav">
+  <div class="nav-logo">
+    <span class="nav-cup">🥤</span> RED<span>CUP</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#highlights">Experience</a></li>
+    <li><a href="#events">Events</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#booking">Book Us</a></li>
+    <li><a href="#events" class="nav-cta">Get Tickets →</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-close" id="mobileClose">✕</div>
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#highlights" class="mobile-link">Experience</a>
+  <a href="#events" class="mobile-link">Events</a>
+  <a href="#gallery" class="mobile-link">Gallery</a>
+  <a href="#booking" class="mobile-link">Book Us</a>
+  <a href="#events" class="btn btn-primary">Get Tickets</a>
+</div>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-layer1"></div>
+    <div class="hero-bg-grain"></div>
+    <div class="hero-bg-vignette"></div>
+    <div class="hero-bg-scanlines"></div>
+    <!-- REPLACE: Add real crowd/event photo as background-image on hero-bg-layer1 -->
+    <div class="hero-img-placeholder">[ Replace with event crowd photo ]</div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      <span class="hero-cup-icon">🥤</span>
+      Chicago's Biggest Karaoke Party
+    </div>
+    <h1 class="hero-h1">
+      <span class="line-red">Red Cup</span>
+      <span class="line-white">Karaoke</span>
+    </h1>
+    <p class="hero-sub">
+      <strong>Grab the mic. Hold your cup.</strong> This is where Chicago comes to party.
+    </p>
+    <div class="hero-ctas">
+      <a href="#events" class="btn btn-primary">🎟 Get Tickets Now</a>
+      <a href="https://instagram.com/redcupkaraoke" class="btn btn-secondary" target="_blank">📲 Follow on Instagram</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    Scroll
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <!-- Duplicated for seamless loop -->
+    <span class="ticker-item">Red Cup Karaoke</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Chicago's Biggest Karaoke Party</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Grab the Mic</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Hosted By Zach Boog</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Music by LMS</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Hyde Park Chicago</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Tickets On Sale Now</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <!-- Duplicate set -->
+    <span class="ticker-item">Red Cup Karaoke</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Chicago's Biggest Karaoke Party</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Grab the Mic</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Hosted By Zach Boog</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Music by LMS</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Hyde Park Chicago</span>
+    <span class="ticker-item ticker-dot">★</span>
+    <span class="ticker-item">Tickets On Sale Now</span>
+    <span class="ticker-item ticker-dot">★</span>
+  </div>
+</div>
+
+<!-- ============================================================
+     ABOUT / EXPERIENCE
+============================================================ -->
+<section id="about">
+  <div class="about-bg-glow"></div>
+  <div class="about-inner">
+    <div class="about-text reveal">
+      <p class="section-label">What Is Red Cup Karaoke</p>
+      <span class="red-line"></span>
+      <h2 class="about-h2">
+        It's Not <em>Just</em><br>Karaoke.<br>It's a Party.
+      </h2>
+      <div class="about-body">
+        <p>Red Cup Karaoke is Chicago's signature nightlife experience — where a full house loses their minds over the music, the mic, and the moment. This isn't your quiet bar trivia situation. This is a packed venue, a DJ-driven atmosphere, and an audience ready to ride for whoever steps on that stage.</p>
+        <p>Founded and hosted by Zach Boog with music by LMS, every Red Cup event is an electric combination of community energy, iconic singalongs, and unforgettable Chicago nights. One red cup changes everything.</p>
+      </div>
+      <div class="about-stats">
+        <div class="stat">
+          <div class="stat-num">500<span>+</span></div>
+          <div class="stat-label">Attendees per event</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">#<span>1</span></div>
+          <div class="stat-label">Karaoke party in Chicago</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">100<span>%</span></div>
+          <div class="stat-label">Crowd participation energy</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">0</div>
+          <div class="stat-label">Bad nights. Zero.</div>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal">
+      <!-- REPLACE: Add real event photo here -->
+      <div class="about-img-main">
+        [ Event photo — crowd / performer on stage ]
+        <div class="cup-watermark">🥤</div>
+      </div>
+      <!-- REPLACE: Add second event photo here (accent panel) -->
+      <div class="about-img-accent">
+        <div class="about-img-accent-inner">
+          [ Zach Boog / LMS photo ]
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WHY PEOPLE LOVE IT
+============================================================ -->
+<section id="highlights">
+  <div class="highlights-inner">
+    <div class="highlights-header reveal">
+      <p class="section-label">Why People Keep Coming Back</p>
+      <span class="red-line center"></span>
+      <h2 class="highlights-h2">
+        The Energy Is<br><span>Unmatched.</span>
+      </h2>
+    </div>
+    <div class="highlights-grid">
+      <div class="highlight-card reveal">
+        <span class="hc-icon">🎤</span>
+        <div class="hc-title">Grab the Mic</div>
+        <p class="hc-body">Anyone can perform. Everyone performs together. From the stage to the crowd, every lyric is a moment. Whether you're a star or terrified, Red Cup has your back.</p>
+      </div>
+      <div class="highlight-card featured reveal">
+        <span class="hc-icon">🏙️</span>
+        <div class="hc-title">Chicago's Biggest</div>
+        <p class="hc-body">No other karaoke event in Chicago packs the energy, the crowd, and the culture that Red Cup delivers. We're not competing — we set the bar.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="hc-icon">🔊</span>
+        <div class="hc-title">Club-Level Atmosphere</div>
+        <p class="hc-body">This isn't a dive bar with a TV screen. Think DJ booth, full sound system, professional hosting, and an atmosphere built for a real night out.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="hc-icon">🎂</span>
+        <div class="hc-title">Perfect For Groups</div>
+        <p class="hc-body">Birthdays, bachelorettes, nights out, or just a vibe with the crew — Red Cup is the move when you want an experience, not just a bar.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="hc-icon">📱</span>
+        <div class="hc-title">Highly Shareable</div>
+        <p class="hc-body">Every moment is a reel. The crowd goes crazy, the performances get wild, and the content practically creates itself. Come ready to post.</p>
+      </div>
+      <div class="highlight-card reveal">
+        <span class="hc-icon">🥤</span>
+        <div class="hc-title">The Red Cup Culture</div>
+        <p class="hc-body">The red cup is more than a prop — it's a symbol. When you see it, you know where the party is. Join the squad that started it all.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GALLERY
+============================================================ -->
+<section id="gallery">
+  <div class="gallery-inner">
+    <div class="gallery-header reveal">
+      <div>
+        <p class="section-label">Moments From the Night</p>
+        <h2 class="gallery-h2">The <span>Crowd</span><br>Says It All.</h2>
+      </div>
+      <a href="https://instagram.com/redcupkaraoke" class="btn btn-secondary" target="_blank">📲 See More on IG</a>
+    </div>
+    <div class="gallery-grid reveal">
+      <!-- REPLACE all placeholders with real event photos/videos -->
+      <div class="gallery-item gi-1">
+        <div class="gallery-placeholder">
+          <span class="gallery-placeholder-icon">📸</span>
+          Main crowd shot — large format
+        </div>
+      </div>
+      <div class="gallery-item gi-2">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Performer on mic</div>
+      </div>
+      <div class="gallery-item gi-3">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>DJ booth / LMS</div>
+      </div>
+      <div class="gallery-item gi-4">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Crowd reaction</div>
+      </div>
+      <div class="gallery-item gi-5">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Stage moment</div>
+      </div>
+      <div class="gallery-item gi-6">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Zach Boog hosting</div>
+      </div>
+      <div class="gallery-item gi-7">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Group / birthday crew</div>
+      </div>
+      <div class="gallery-item gi-8">
+        <div class="gallery-placeholder"><span class="gallery-placeholder-icon">📸</span>Red cup moment</div>
+      </div>
+    </div>
+    <p class="gallery-caption">📸 Replace all panels with real event photos from @redcupkaraoke</p>
+  </div>
+</section>
+
+<!-- ============================================================
+     UPCOMING EVENTS / CTA
+============================================================ -->
+<section id="events">
+  <div class="events-bg"></div>
+  <div class="events-inner">
+    <p class="section-label reveal">Upcoming Shows</p>
+    <span class="red-line center reveal"></span>
+    <h2 class="events-h2 reveal">
+      Next<br><span>Event</span><br>Incoming.
+    </h2>
+
+    <!-- EVENT CARD — Update with real date/venue -->
+    <div class="event-card reveal">
+      <div class="event-date-block">
+        <div class="event-date-month">TBD</div>
+        <div class="event-date-day">??</div>
+        <div class="event-date-year">2025</div>
+      </div>
+      <div class="event-info">
+        <div class="event-name">Red Cup Karaoke</div>
+        <div class="event-details">
+          Chicago, IL &nbsp;·&nbsp; Doors 9:30 PM &nbsp;·&nbsp; Until 2A<br>
+          Hosted by <strong>Zach Boog</strong> &nbsp;·&nbsp; Music by <strong>LMS & Friends</strong>
+        </div>
+        <div class="event-badge">🔥 Tickets On Sale Now</div>
+      </div>
+      <div class="event-cta">
+        <!-- REPLACE href with real Eventnoire/ticket link -->
+        <a href="#" class="btn btn-primary">Get Tickets</a>
+      </div>
+    </div>
+
+    <p class="events-disclaimer">
+      🎟 Tickets available on Eventnoire · Early bird pricing goes fast — don't sleep
+    </p>
+
+    <div style="margin-top: 3rem; display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <a href="#booking" class="btn btn-outline-white">Inquire About Private Events</a>
+      <a href="https://instagram.com/redcupkaraoke" class="btn btn-gold" target="_blank">📲 Follow for Announcements</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     BOOKING / PARTNER
+============================================================ -->
+<section id="booking">
+  <div class="booking-bg"></div>
+  <div class="booking-inner">
+    <div class="booking-text reveal">
+      <p class="section-label">Work With Red Cup Karaoke</p>
+      <span class="red-line"></span>
+      <h2 class="booking-h2">
+        Let's Build<br>Something <em>Big</em>.
+      </h2>
+      <p class="booking-body">
+        Whether you want to host Red Cup Karaoke at your venue, partner on a collaboration, sponsor an event, or book us for a private experience — we're ready to talk. Red Cup is a brand that moves culture, and we're selective about who we bring to the table.
+      </p>
+      <div class="booking-options">
+        <div class="booking-option"><div class="booking-option-dot"></div>Venue Partnerships</div>
+        <div class="booking-option"><div class="booking-option-dot"></div>Brand Sponsorships</div>
+        <div class="booking-option"><div class="booking-option-dot"></div>Private Event Bookings</div>
+        <div class="booking-option"><div class="booking-option-dot"></div>Birthday & Group Packages</div>
+        <div class="booking-option"><div class="booking-option-dot"></div>Media & Creative Collaborations</div>
+      </div>
+      <p style="font-size: 0.85rem; color: rgba(255,255,255,0.4); font-family: var(--font-cond); letter-spacing: 0.1em;">
+        📧 <!-- REPLACE with real email --> hello@redcupkaraoke.com
+      </p>
+    </div>
+
+    <div class="booking-form reveal">
+      <h3>Send an Inquiry</h3>
+      <p>We'll get back to you within 48 hours.</p>
+      <div class="form-row">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Zach"/>
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Boog"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="you@email.com"/>
+      </div>
+      <div class="form-group">
+        <label>Inquiry Type</label>
+        <select>
+          <option value="">Select inquiry type...</option>
+          <option>Venue Partnership</option>
+          <option>Brand Sponsorship</option>
+          <option>Private Event / Birthday</option>
+          <option>Media / Press</option>
+          <option>General Inquiry</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Tell Us More</label>
+        <textarea placeholder="Give us the details — event date, venue size, vision, budget range, etc."></textarea>
+      </div>
+      <button class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 1.05rem;">
+        Send Inquiry →
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="footer-logo">🥤 RED<span>CUP</span> KARAOKE</div>
+        <div class="footer-tagline">Chicago's Biggest Karaoke Party</div>
+        <div class="footer-socials">
+          <!-- REPLACE hrefs with real social links -->
+          <a href="https://instagram.com/redcupkaraoke" class="footer-social-link" target="_blank" title="Instagram">📷</a>
+          <a href="#" class="footer-social-link" target="_blank" title="TikTok">🎵</a>
+          <a href="#" class="footer-social-link" target="_blank" title="Twitter/X">🐦</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer-col-title">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="#about">About</a></li>
+          <li><a href="#highlights">The Experience</a></li>
+          <li><a href="#events">Upcoming Events</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#booking">Book / Partner</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Contact</div>
+        <ul class="footer-links">
+          <!-- REPLACE with real contact info -->
+          <li><a href="mailto:hello@redcupkaraoke.com">hello@redcupkaraoke.com</a></li>
+          <li><a href="https://instagram.com/redcupkaraoke" target="_blank">@redcupkaraoke</a></li>
+          <li><a href="#">Chicago, IL</a></li>
+          <li><a href="#">Eventnoire Tickets</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Red Cup Karaoke. All Rights Reserved.</span>
+      <span class="footer-bottom-cup">🥤 HOLD YOUR CUP. GRAB THE MIC.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
+<script>
+  // --- Nav scroll effect ---
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+  });
+
+  // --- Hamburger / mobile menu ---
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  const mobileClose = document.getElementById('mobileClose');
+  const mobileLinks = document.querySelectorAll('.mobile-link');
+
+  hamburger.addEventListener('click', () => {
+    mobileMenu.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  });
+  function closeMenu() {
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  mobileClose.addEventListener('click', closeMenu);
+  mobileLinks.forEach(link => link.addEventListener('click', closeMenu));
+
+  // --- Scroll reveal ---
+  const revealElements = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        // Stagger siblings
+        const siblings = entry.target.parentElement.querySelectorAll('.reveal');
+        let delay = 0;
+        siblings.forEach((el, idx) => {
+          if (el === entry.target) delay = idx * 80;
+        });
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, delay);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  revealElements.forEach(el => observer.observe(el));
+
+  // --- Active nav link ---
+  const sections = document.querySelectorAll('section[id]');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(section => {
+      if (window.scrollY >= section.offsetTop - 120) {
+        current = section.getAttribute('id');
+      }
+    });
+    document.querySelectorAll('.nav-links a').forEach(a => {
+      a.style.color = a.getAttribute('href') === `#${current}` ? 'var(--gold)' : '';
+    });
+  });
+
+  // --- Form submit (placeholder) ---
+  document.querySelector('.booking-form .btn-primary').addEventListener('click', function(e) {
+    this.textContent = '✓ Inquiry Sent!';
+    this.style.background = '#2ecc71';
+    this.style.boxShadow = '0 0 20px rgba(46,204,113,0.4)';
+    setTimeout(() => {
+      this.textContent = 'Send Inquiry →';
+      this.style.background = '';
+      this.style.boxShadow = '';
+    }, 3000);
+  });
+</script>
+</body>
+</html>
